@@ -488,14 +488,15 @@ class _HomeMenuState extends State<HomeMenu> {
       elevation: 0,
       toolbarHeight: MediaQuery.of(context).size.height * 0.13,
       backgroundColor: Colors.white,
-      flexibleSpace: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Row(
+      flexibleSpace: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Expanded(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -524,8 +525,8 @@ class _HomeMenuState extends State<HomeMenu> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
