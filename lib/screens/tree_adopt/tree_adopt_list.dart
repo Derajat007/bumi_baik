@@ -69,15 +69,17 @@ class _TreeAdoptListState extends State<TreeAdoptList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.adoptList[index].name!,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                          style:
-                              Theme.of(context).textTheme.headline6?.copyWith(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                  ),
+                        Expanded(
+                          child: Text(
+                            widget.adoptList[index].name!,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            style:
+                                Theme.of(context).textTheme.headline6?.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                    ),
+                          ),
                         ),
                         const SizedBox(height: 5),
                         Row(
@@ -88,14 +90,16 @@ class _TreeAdoptListState extends State<TreeAdoptList> {
                               Icons.location_pin,
                               color: ColorManager.blue,
                             ),
-                            Text(
-                              widget.adoptList[index].location!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2
-                                  ?.copyWith(
-                                    color: ColorManager.blue,
-                                  ),
+                            Expanded(
+                              child: Text(
+                                widget.adoptList[index].location!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    ?.copyWith(
+                                      color: ColorManager.blue,
+                                    ),
+                              ),
                             ),
                           ],
                         ),

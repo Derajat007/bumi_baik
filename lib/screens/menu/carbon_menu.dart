@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
+import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:intl/intl.dart';
 
 import '../../resources/color_manager.dart';
@@ -111,40 +112,40 @@ class _CarbonMenuState extends State<CarbonMenu> {
                 style: const TextStyle(color: Colors.black),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              // Center(
-              //   child: SizedBox(
-              //     width: MediaQuery.of(context).size.width,
-              //     height: MediaQuery.of(context).size.height * 0.15,
-              //     child: LiquidLinearProgressIndicator(
-              //       value: carbon == null
-              //           ? 0
-              //           : carbon!.offset == null
-              //               ? 0
-              //               : carbon!.offset! / 100, // Defaults to 0.5.
-              //       valueColor: AlwaysStoppedAnimation(ColorManager
-              //           .primary), // Defaults to the current Theme's accentColor.
-              //       backgroundColor: Colors.grey[
-              //           700], // Defaults to the current Theme's backgroundColor.
-              //       borderColor: Colors.grey[700]!,
-              //       borderWidth: 5.0,
-              //       borderRadius: 12.0,
-              //       direction: Axis
-              //           .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-              //       center: Text(
-              //         carbon == null
-              //             ? "0%"
-              //             : carbon!.offset == null
-              //                 ? "0%"
-              //                 : "${carbon!.offset!.toStringAsFixed(0)}%",
-              //         style: const TextStyle(
-              //           color: Colors.white,
-              //           fontWeight: FontWeight.bold,
-              //           fontSize: 20,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: LiquidLinearProgressIndicator(
+                    value: carbon == null
+                        ? 0
+                        : carbon!.offset == null
+                            ? 0
+                            : carbon!.offset! / 100, // Defaults to 0.5.
+                    valueColor: AlwaysStoppedAnimation(ColorManager
+                        .primary), // Defaults to the current Theme's accentColor.
+                    backgroundColor: Colors.grey[
+                        700], // Defaults to the current Theme's backgroundColor.
+                    borderColor: Colors.grey[700]!,
+                    borderWidth: 5.0,
+                    borderRadius: 12.0,
+                    direction: Axis
+                        .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                    center: Text(
+                      carbon == null
+                          ? "0%"
+                          : carbon!.offset == null
+                              ? "0%"
+                              : "${carbon!.offset!.toStringAsFixed(0)}%",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Text(
                 carbon == null
