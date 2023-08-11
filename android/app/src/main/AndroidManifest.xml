@@ -1,4 +1,17 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    package='com.example.url_view'>
+    <queries>
+      <!-- If your app checks for SMS support -->
+      <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="http" />
+      </intent>
+      <!-- If your app checks for call support -->
+      <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="https" />
+      </intent>
+    </queries>
     <application
         android:label="new_bumi_baik"
         android:name="${applicationName}"
@@ -31,4 +44,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <!-- Provide required visibility configuration for API level 30 and above -->
 </manifest>

@@ -10,7 +10,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:midtrans_sdk/midtrans_sdk.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../resources/color_manager.dart';
 
 class TreeAdoptDetail extends StatefulWidget {
@@ -21,6 +21,7 @@ class TreeAdoptDetail extends StatefulWidget {
   @override
   State<TreeAdoptDetail> createState() => _TreeAdoptDetailState();
 }
+
 
 class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
   ProductAdoptModel? newData;
@@ -222,22 +223,22 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                               newData!.quota!.toString(),
                             ),
                             const SizedBox(height: 20),
-                            Text(
-                              "Pilih Nominal Pembelian",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5
-                                  ?.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                  ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 50,
-                              child: _buildChips(),
-                            ),
+                            // Text(
+                            //   "Pilih Nominal Pembelian",
+                            //   style: Theme.of(context)
+                            //       .textTheme
+                            //       .headline5
+                            //       ?.copyWith(
+                            //         color: Colors.black,
+                            //         fontWeight: FontWeight.bold,
+                            //         fontSize: 17,
+                            //       ),
+                            // ),
+                            // const SizedBox(height: 10),
+                            // SizedBox(
+                            //   height: 50,
+                            //   child: _buildChips(),
+                            // ),
                             const SizedBox(height: 15),
                             SizedBox(
                               height: 50,
@@ -256,20 +257,20 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                                         ),
                                       )
                                     : const Text('Beli'),
-                                onPressed: () async {
-                                  // CommonDialogWidget.buildOkDialog(
-                                  //     context,
-                                  //     false,
-                                  //     "Fitur pembayaran masih dalam tahap pengembangan.");
-                                  if (_selectedIndex == null) {
-                                    CommonDialogWidget.buildOkDialog(
-                                        context,
-                                        false,
-                                        "Harap pilih nominal pembelian terlebih dahulu.");
-                                  } else {
-                                    startTransaction();
-                                  }
-                                },
+                                onPressed: _launchGoogleSearch
+                                // CommonDialogWidget.buildOkDialog(
+                                //     context,
+                                //     false,
+                                //     "Fitur pembayaran masih dalam tahap pengembangan.");
+                                // if (_selectedIndex == null) {
+                                //   CommonDialogWidget.buildOkDialog(
+                                //       context,
+                                //       false,
+                                //       "Harap pilih nominal pembelian terlebih dahulu.");
+                                // } else {
+                                //   startTransaction();
+                                // }
+                                ,
                               ),
                             ),
                           ],
@@ -357,3 +358,11 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
     }
   }
 }
+  void _launchGoogleSearch() async {
+    final String googleUrl = 'https://bumibaik.com/donate-payment/1';
+    if (await canLaunch(googleUrl)) {
+      await launch(googleUrl);
+    } else {
+      throw 'Could not launch $googleUrl';
+    }
+  }
