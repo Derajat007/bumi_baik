@@ -29,7 +29,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        toolbarHeight: MediaQuery.of(context).size.height * 0.11,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.15,
         backgroundColor: Colors.white,
         flexibleSpace: SafeArea(
           child: Padding(
@@ -76,7 +76,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
           const Padding(
             padding: EdgeInsets.only(left: 20),
             child: Text(
-              'Profil',
+              '',
+              // 'Profil',
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,

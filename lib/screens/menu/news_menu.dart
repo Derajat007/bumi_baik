@@ -134,7 +134,8 @@ class _NewsMenuState extends State<NewsMenu> {
                 imageSliders.isEmpty
                     ? Expanded(child: Container())
                     : buildSliderShow(imageSliders),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                // const SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Expanded(
