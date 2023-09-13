@@ -2,8 +2,14 @@ import 'package:new_bumi_baik/models/carbon_calculation_result_model.dart';
 import 'package:new_bumi_baik/screens/menu/dashboard.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/common_dialog_widget.dart';
+import '../../common/common_shimmer_widget.dart';
+import '../../models/product_adopt_model.dart';
 import '../../models/user_model.dart';
 import '../../resources/color_manager.dart';
+import '../../services/product_service.dart';
+import '../tree_adopt/tree_adopt_list.dart';
+import '../widgets/product_widget.dart';
 
 class Calculate2 extends StatefulWidget {
   CarbonCalculationResultModel result;
@@ -16,7 +22,21 @@ class Calculate2 extends StatefulWidget {
 }
 
 class _Calculate2State extends State<Calculate2> {
+  List<ProductAdoptModel>? productAdoptList;
+  final ScrollController? scrollController1 = ScrollController();
   @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    try {
+      productAdoptList = await ProductService().getProductAdopt();
+      setState(() {});
+    } catch (e) {}
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -85,7 +105,37 @@ class _Calculate2State extends State<Calculate2> {
                             "Ambil langkah untuk menjadikan bumi semakin baik dengan mengurangi emisi karbonmu"),
                         const SizedBox(height: 20),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TreeAdoptList(
+                                  adoptList: productAdoptList!,
+                                ),
+                              ),
+                            );
+                            productAdoptList == null;
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.24,
+                              child: CommonShimmerWidget()
+                                  .buildProductItemShimmer(context),
+                            );
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.24,
+                              child: ListView.builder(
+                                controller: scrollController1,
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount: productAdoptList!.length,
+                                itemBuilder: (context, index) {
+                                  return ProductWidget(
+                                    adoptModel: productAdoptList![index],
+                                    plantingModel: null,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                           child: Stack(
                             children: <Widget>[
                               ClipRRect(
@@ -182,7 +232,7 @@ class _Calculate2State extends State<Calculate2> {
                                     child: Column(
                                   children: [
                                     Text(
-                                      "Tree Planting / Penanaman Pohon",
+                                      "Donate / Donasi",
                                       textAlign: TextAlign.center,
                                       style: Theme.of(context)
                                           .textTheme
@@ -193,7 +243,7 @@ class _Calculate2State extends State<Calculate2> {
                                     ),
                                     const SizedBox(height: 30),
                                     Text(
-                                      "Dengan menanam bibit pohon baru kamu mulai mengurangi emisi karbon dan mengatasi maslah lingkungan",
+                                      "Setiap donasi adalah langkah kecil menuju bumi yang lebih hijau.Emisi yang kita kurangi hari ini. Bumi adalah warisan berharga yang kita tinggalkan untuk generasi mendatang.",
                                       textAlign: TextAlign.center,
                                       style: Theme.of(context)
                                           .textTheme
