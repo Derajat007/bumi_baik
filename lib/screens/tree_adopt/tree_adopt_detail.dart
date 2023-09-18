@@ -167,7 +167,7 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                               widget.productAdoptModel.name!,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -178,7 +178,7 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                               "Detail",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -194,7 +194,7 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                               "Lokasi",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -210,7 +210,7 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                               "Sisa Kuota",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -226,7 +226,7 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                               "Pilih Nominal Pembelian",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
+                                  .headlineSmall
                                   ?.copyWith(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
