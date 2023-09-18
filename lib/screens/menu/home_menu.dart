@@ -8,8 +8,10 @@ import 'package:new_bumi_baik/models/project_model.dart';
 import 'package:new_bumi_baik/models/user_model.dart';
 import 'package:new_bumi_baik/resources/color_manager.dart';
 import 'package:new_bumi_baik/screens/details/project_list.dart';
+import 'package:new_bumi_baik/screens/donasi/donasi_list.dart';
 import 'package:new_bumi_baik/screens/tree_adopt/tree_adopt_list.dart';
 import 'package:new_bumi_baik/screens/tree_planting/tree_planting_list.dart';
+import 'package:new_bumi_baik/screens/widgets/donasi_widget.dart';
 import 'package:new_bumi_baik/screens/widgets/product_widget.dart';
 import 'package:new_bumi_baik/screens/widgets/project_widget.dart';
 import 'package:new_bumi_baik/services/product_service.dart';
@@ -96,6 +98,7 @@ class _HomeMenuState extends State<HomeMenu> {
     );
   }
 
+//Susunan tampilan Screen Dashboard
   buildListInd() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -108,6 +111,8 @@ class _HomeMenuState extends State<HomeMenu> {
         SizedBox(height: MediaQuery.of(context).size.height * 0.03),
         // buildTanamPohon(),
         // SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+        buildDonasiPohon(),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
         buildBerita(),
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
       ],
@@ -220,6 +225,76 @@ class _HomeMenuState extends State<HomeMenu> {
   //   );
   // }
 
+  buildDonasiPohon() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Donasi',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.007),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.005,
+                  color: ColorManager.blue,
+                ),
+              ],
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorManager.blue, // background
+                foregroundColor: Colors.white, // foreground
+              ),
+              child: const Text('Lainnya'),
+              onPressed: () {
+                CommonWidget().movePage(
+                  context,
+                  DonasiList(
+                    adoptList: productAdoptList!,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+        productAdoptList == null
+            ? SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                child: CommonShimmerWidget().buildProductItemShimmer(context),
+              )
+            : SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                child: ListView.builder(
+                  controller: scrollController1,
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: productAdoptList!.length,
+                  itemBuilder: (context, index) {
+                    return DonasiWidget(
+                      adoptModel: productAdoptList![index],
+                      plantingModel: null,
+                    );
+                  },
+                ),
+              ),
+      ],
+    );
+  }
+
   buildBerita() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -230,7 +305,7 @@ class _HomeMenuState extends State<HomeMenu> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Text(
-              'Berita & Blog lainnya',
+              'Berita & Blog lainnya PP',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
