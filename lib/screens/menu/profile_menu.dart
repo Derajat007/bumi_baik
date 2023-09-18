@@ -120,6 +120,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                     ),
                     child: const Text('Edit Profil'),
                     onPressed: () async {
+                      print(widget.userModel.photo);
                       CommonWidget().movePage(
                           context,
                           EditProfile(

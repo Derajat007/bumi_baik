@@ -8,6 +8,7 @@ import '../../models/product_adopt_model.dart';
 import '../../models/user_model.dart';
 import '../../resources/color_manager.dart';
 import '../../services/product_service.dart';
+import '../donasi/donasi_list.dart';
 import '../tree_adopt/tree_adopt_list.dart';
 import '../widgets/product_widget.dart';
 
@@ -198,7 +199,17 @@ class _Calculate2State extends State<Calculate2> {
                         ),
                         const SizedBox(height: 20),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            print("masuk");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DonasiList(
+                                  adoptList: productAdoptList!,
+                                ),
+                              ),
+                            );
+                          },
                           child: Stack(
                             children: <Widget>[
                               ClipRRect(
