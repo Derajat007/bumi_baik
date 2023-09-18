@@ -18,10 +18,10 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  TextEditingController? nameController = TextEditingController();
-  TextEditingController? emailController = TextEditingController();
-  TextEditingController? phoneController = TextEditingController();
-  TextEditingController? addressController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   final ImagePicker _picker = ImagePicker();
   dynamic _pickImageError;
@@ -54,15 +54,27 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     setDetails();
+    widget.userModel = UserModel(
+        id: 1,
+        name: 'Derajat',
+        email: 'darkbludevil@gmail.com',
+        telp: '08887125515',
+        birthDate: '28 agustus 2020',
+        gender: 'laki - laki',
+        address: ' aslkdjalsdjlsakj',
+        photo: '',
+        type: '',
+        emailVerifiedAt: DateTime.now());
+
     super.initState();
   }
 
   setDetails() {
     setState(() {
-      nameController!.text = widget.userModel.name!;
-      emailController!.text = widget.userModel.email!;
-      addressController!.text = widget.userModel.address ?? "";
-      phoneController!.text = widget.userModel.telp ?? "";
+      nameController.text = widget.userModel.name ?? "";
+      emailController.text = widget.userModel.email ?? "";
+      addressController.text = widget.userModel.address ?? "";
+      phoneController.text = widget.userModel.telp ?? "";
     });
   }
 
