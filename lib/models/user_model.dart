@@ -47,15 +47,15 @@ class UserModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        // "id": id,
         "name": name,
         "email": email,
         "telp": telp,
         "birth_date": birthDate,
         "gender": gender,
-        "address": address,
-        "photo": photo,
-        "type": type,
-        "email_verified_at": emailVerifiedAt!.toIso8601String(),
+        // "address": address,
+        // "photo": photo,
+        // "type": type,
+        // "email_verified_at": emailVerifiedAt!.toIso8601String(),
       };
 }

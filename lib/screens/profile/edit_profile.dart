@@ -8,6 +8,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_bumi_baik/services/user_service.dart';
 
 class EditProfile extends StatefulWidget {
   UserModel userModel;
@@ -54,17 +55,17 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     setDetails();
-    widget.userModel = UserModel(
-        id: 1,
-        name: 'Derajat',
-        email: 'darkbludevil@gmail.com',
-        telp: '08887125515',
-        birthDate: '28 agustus 2020',
-        gender: 'laki - laki',
-        address: ' aslkdjalsdjlsakj',
-        photo: '',
-        type: '',
-        emailVerifiedAt: DateTime.now());
+    // widget.userModel = UserModel(
+    //     id: 1,
+    //     name: '',
+    //     email: '',
+    //     telp: '',
+    //     birthDate: null,
+    //     gender: null,
+    //     address: null,
+    //     photo: null,
+    //     type: '',
+    //     emailVerifiedAt: DateTime.now());
 
     super.initState();
   }
@@ -228,12 +229,21 @@ class _EditProfileState extends State<EditProfile> {
                                   width: 120,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: FancyShimmerImage(
-                                      boxFit: BoxFit.cover,
-                                      imageUrl: widget.userModel.photo!,
-                                      errorWidget: Image.network(
-                                          'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
-                                    ),
+                                    child: widget.userModel.photo == null
+                                        ? Image(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.4,
+                                            image: const AssetImage(
+                                                'assets/images/logo_nama.png'),
+                                          )
+                                        : FancyShimmerImage(
+                                            imageUrl: widget.userModel.photo!,
+                                            errorWidget: Image.network(
+                                                'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
+                                            // 'https://ik.imagekit.io/mrggsfxta/Pulsar_xlite_v2_-_mouse.jpeg?updatedAt=1682258903622',
+                                          ),
                                   ),
                                 )
                               : Image.file(
@@ -360,6 +370,21 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ),
       ),
+      floatingActionButton: ElevatedButton(
+          onPressed: () {
+            print(widget.userModel.gender);
+            UserService().putUser(
+              UserModel(
+                  name: nameController.text,
+                  email: emailController.text,
+                  // address: addressController.text,
+                  telp: phoneController.text,
+                  birthDate: widget.userModel.birthDate,
+                  gender: widget.userModel.gender),
+            );
+          },
+          child: const Text("Simpan")),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
