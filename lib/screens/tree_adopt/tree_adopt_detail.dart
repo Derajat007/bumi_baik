@@ -62,7 +62,7 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
     setState(() {});
   }
 
-  int? _selectedIndex;
+  int _selectedIndex = -1;
 
   final List<String> _options = [
     'Rp.15.000',
@@ -257,17 +257,19 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
                                       )
                                     : const Text('Beli'),
                                 onPressed: () async {
+                                  // print(optionValue[_selectedIndex]);
                                   // CommonDialogWidget.buildOkDialog(
                                   //     context,
                                   //     false,
                                   //     "Fitur pembayaran masih dalam tahap pengembangan.");
-                                  if (_selectedIndex == null) {
+                                  if (_selectedIndex == -1) {
                                     CommonDialogWidget.buildOkDialog(
                                         context,
                                         false,
                                         "Harap pilih nominal pembelian terlebih dahulu.");
                                   } else {
-                                    startTransaction();
+                                    startTransaction(
+                                        optionValue[_selectedIndex]);
                                   }
                                 },
                               ),
@@ -307,53 +309,54 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
     return images;
   }
 
-  startTransaction() async {
+  startTransaction(double price) async {
     Map<String, dynamic> data = {
       "productId": widget.productAdoptModel.id,
       "productName": widget.productAdoptModel.name,
-      "total": 15000,
+      "total": price,
     };
-    try {
-      TransactionReturnModel? tr = await TransactionService().adoptTree(data);
-      String? token = tr.token;
+    print(data['total']);
+    // try {
+    //   TransactionReturnModel? tr = await TransactionService().adoptTree(data);
+    //   String? token = tr.token;
 
-      try {
-        await _midtrans?.startPaymentUiFlow(
-          token: token,
-        );
+    //   try {
+    //     await _midtrans?.startPaymentUiFlow(
+    //       token: token,
+    //     );
 
-        // setState(() {
-        //   _isLoading = false;
-        // });
+    //     // setState(() {
+    //     //   _isLoading = false;
+    //     // });
 
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PaymentStatus(
-        //       orderId: orderId,
-        //       paymentStatus: true,
-        //     ),
-        //   ),
-        // );
-      } catch (e) {
-        // setState(() {
-        //   _isLoading = false;
-        // });
+    //     // Navigator.push(
+    //     //   context,
+    //     //   MaterialPageRoute(
+    //     //     builder: (context) => PaymentStatus(
+    //     //       orderId: orderId,
+    //     //       paymentStatus: true,
+    //     //     ),
+    //     //   ),
+    //     // );
+    //   } catch (e) {
+    //     // setState(() {
+    //     //   _isLoading = false;
+    //     // });
 
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PaymentStatus(
-        //       orderId: orderId,
-        //       paymentStatus: false,
-        //     ),
-        //   ),
-        // );
-        // ignore: use_build_context_synchronously
-        CommonDialogWidget.buildOkDialog(context, false, e.toString());
-      }
-    } catch (e) {
-      CommonDialogWidget.buildOkDialog(context, false, e.toString());
-    }
+    //     // Navigator.push(
+    //     //   context,
+    //     //   MaterialPageRoute(
+    //     //     builder: (context) => PaymentStatus(
+    //     //       orderId: orderId,
+    //     //       paymentStatus: false,
+    //     //     ),
+    //     //   ),
+    //     // );
+    //     // ignore: use_build_context_synchronously
+    //     CommonDialogWidget.buildOkDialog(context, false, e.toString());
+    //   }
+    // } catch (e) {
+    //   CommonDialogWidget.buildOkDialog(context, false, e.toString());
+    // }
   }
 }
