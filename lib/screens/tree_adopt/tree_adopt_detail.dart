@@ -315,48 +315,48 @@ class _TreeAdoptDetailState extends State<TreeAdoptDetail> {
       "productName": widget.productAdoptModel.name,
       "total": price,
     };
-    print(data['total']);
-    // try {
-    //   TransactionReturnModel? tr = await TransactionService().adoptTree(data);
-    //   String? token = tr.token;
+    // print(data['total']);
+    try {
+      TransactionReturnModel? tr = await TransactionService().adoptTree(data);
+      String? token = tr.token;
+      print('ini token transaksi $token');
+      try {
+        await _midtrans?.startPaymentUiFlow(
+          token: token,
+        );
 
-    //   try {
-    //     await _midtrans?.startPaymentUiFlow(
-    //       token: token,
-    //     );
+        // setState(() {
+        //   _isLoading = false;
+        // });
 
-    //     // setState(() {
-    //     //   _isLoading = false;
-    //     // });
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => PaymentStatus(
+        //       orderId: orderId,
+        //       paymentStatus: true,
+        //     ),
+        //   ),
+        // );
+      } catch (e) {
+        // setState(() {
+        //   _isLoading = false;
+        // });
 
-    //     // Navigator.push(
-    //     //   context,
-    //     //   MaterialPageRoute(
-    //     //     builder: (context) => PaymentStatus(
-    //     //       orderId: orderId,
-    //     //       paymentStatus: true,
-    //     //     ),
-    //     //   ),
-    //     // );
-    //   } catch (e) {
-    //     // setState(() {
-    //     //   _isLoading = false;
-    //     // });
-
-    //     // Navigator.push(
-    //     //   context,
-    //     //   MaterialPageRoute(
-    //     //     builder: (context) => PaymentStatus(
-    //     //       orderId: orderId,
-    //     //       paymentStatus: false,
-    //     //     ),
-    //     //   ),
-    //     // );
-    //     // ignore: use_build_context_synchronously
-    //     CommonDialogWidget.buildOkDialog(context, false, e.toString());
-    //   }
-    // } catch (e) {
-    //   CommonDialogWidget.buildOkDialog(context, false, e.toString());
-    // }
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => PaymentStatus(
+        //       orderId: orderId,
+        //       paymentStatus: false,
+        //     ),
+        //   ),
+        // );
+        // ignore: use_build_context_synchronously
+        CommonDialogWidget.buildOkDialog(context, false, e.toString());
+      }
+    } catch (e) {
+      CommonDialogWidget.buildOkDialog(context, false, e.toString());
+    }
   }
 }
