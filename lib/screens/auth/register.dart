@@ -28,6 +28,8 @@ class _DaftarState extends State<Register> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
+  String? selectedValue;
+
   bool _isObscure = true;
 
   final _formKey = GlobalKey<FormState>();
@@ -129,6 +131,26 @@ class _DaftarState extends State<Register> {
                                 ),
                               ),
                             ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(15),
+                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          // decoration: BoxDecoration(
+                            
+                          // ),
+                          child: DropdownButton<String?>(
+                            value: selectedValue,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedValue = value;
+                              });
+                            },
+                            underline: SizedBox(),
+                            isExpanded: true,
+                            items: ["Perempuan", "Laki - Laki"]
+                            .map<DropdownMenuItem<String?>>((e) => DropdownMenuItem(child: Text(e.toString()),
+                            value: e,)).toList()
                           ),
                         ),
                         Container(

@@ -86,8 +86,9 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 10),
                   Text(
-                    "K-POPERS IND",
+                    "Save Earth with K-POPERS INDONESIA",
                     // isAdopt
                     //     ? widget.adoptModel!.name!
                     //     : widget.plantingModel!.name!,
@@ -95,10 +96,24 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                     // softWrap: true,
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                           color: Colors.black,
-                          fontSize: 18,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 20),
+                  Text(
+                    "UKM Tani: Cempaka Foundatiion",
+                    // isAdopt
+                    //     ? widget.adoptModel!.name!
+                    //     : widget.plantingModel!.name!,
+                    // overflow: TextOverflow.ellipsis,
+                    // softWrap: true,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                  ),
+                  const SizedBox(height: 10),
                   LinearPercentIndicator(
                     width: 144.0,
                     animation: true,
@@ -113,6 +128,37 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                     ),
                     linearStrokeCap: LinearStrokeCap.butt,
                     progressColor: Colors.blue,
+                  ),
+                  const SizedBox(height: 15),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Rp. 45,000',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                      ),
+                      Text(
+                        '151 hari lagi',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Pohon terkumpul",
+                    // isAdopt
+                    //     ? widget.adoptModel!.name!
+                    //     : widget.plantingModel!.name!,
+                    // overflow: TextOverflow.ellipsis,
+                    // softWrap: true,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
                   ),
                   // const Row(
                   //   mainAxisAlignment: MainAxisAlignment.start,
