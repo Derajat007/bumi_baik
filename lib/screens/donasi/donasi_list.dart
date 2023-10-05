@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import '../../resources/color_manager.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class DonasiList extends StatefulWidget {
   List<ProductAdoptModel> adoptList;
@@ -27,7 +28,7 @@ class _DonasiListState extends State<DonasiList> {
         minItemsPerRow: 2,
         horizontalGridSpacing: 10,
         verticalGridSpacing: 10,
-        minItemWidth: MediaQuery.of(context).size.width * 0.3,
+        minItemWidth: MediaQuery.of(context).size.width * 0.5,
         horizontalGridMargin: 10,
         verticalGridMargin: 10,
         children: List.generate(
@@ -49,7 +50,7 @@ class _DonasiListState extends State<DonasiList> {
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.13,
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.40,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
@@ -61,38 +62,87 @@ class _DonasiListState extends State<DonasiList> {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.10,
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.28,
+                    width: MediaQuery.of(context).size.width * 0.40,
                     padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Text(
-                            "Judul",
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
-                            style:
-                                Theme.of(context).textTheme.headline6?.copyWith(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                    ),
-                          ),
+                        const SizedBox(height: 10),
+                  Text(
+                    "Save Earth with K-POPERS INDONESIA",
+                    // isAdopt
+                    //     ? widget.adoptModel!.name!
+                    //     : widget.plantingModel!.name!,
+                    // overflow: TextOverflow.ellipsis,
+                    // softWrap: true,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 5),
-                        Expanded(
-                          child: Text(
-                            "K-POPERS INDONESIA",
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
-                            style:
-                                Theme.of(context).textTheme.headline6?.copyWith(
-                                      color: Colors.black,
-                                      fontSize: 10,
-                                    ),
-                          ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "UKM Tani: Cempaka Foundatiion",
+                    // isAdopt
+                    //     ? widget.adoptModel!.name!
+                    //     : widget.plantingModel!.name!,
+                    // overflow: TextOverflow.ellipsis,
+                    // softWrap: true,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                          color: Colors.black,
+                          fontSize: 12,
                         ),
+                  ),
+                  const SizedBox(height: 10),
+                  LinearPercentIndicator(
+                    width: 144.0,
+                    animation: true,
+                    animationDuration: 1000,
+                    lineHeight: 13.0,
+                    // leading: new Text("left content"),
+                    // trailing: new Text("right content"),
+                    percent: 0.2,
+                    center: const Text(
+                      "20.0%",
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    linearStrokeCap: LinearStrokeCap.butt,
+                    progressColor: Colors.blue,
+                  ),
+                  const SizedBox(height: 15),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Rp. 45,000',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                      ),
+                      Text(
+                        '151 hari lagi',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Pohon terkumpul",
+                    // isAdopt
+                    //     ? widget.adoptModel!.name!
+                    //     : widget.plantingModel!.name!,
+                    // overflow: TextOverflow.ellipsis,
+                    // softWrap: true,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                  ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.start,
                         //   crossAxisAlignment: CrossAxisAlignment.center,
