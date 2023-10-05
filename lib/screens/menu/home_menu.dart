@@ -273,11 +273,11 @@ class _HomeMenuState extends State<HomeMenu> {
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
         productAdoptList == null
             ? SizedBox(
-                height: MediaQuery.of(context).size.height * 0.24,
+                height: MediaQuery.of(context).size.height * 0.37,
                 child: CommonShimmerWidget().buildProductItemShimmer(context),
               )
             : SizedBox(
-                height: MediaQuery.of(context).size.height * 0.24,
+                height: MediaQuery.of(context).size.height * 0.43,
                 child: ListView.builder(
                   controller: scrollController1,
                   scrollDirection: Axis.horizontal,
