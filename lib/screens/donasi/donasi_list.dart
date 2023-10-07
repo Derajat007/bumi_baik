@@ -7,12 +7,13 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
+import '../../models/detail_donasi_respones_model.dart';
 import '../../resources/color_manager.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DonasiList extends StatefulWidget {
-  List<ProductAdoptModel> adoptList;
-  DonasiList({required this.adoptList, Key? key}) : super(key: key);
+  List<DetailDonasiResponseModel> donasiList;
+  DonasiList({required this.donasiList, Key? key}) : super(key: key);
 
   @override
   State<DonasiList> createState() => _DonasiListState();
@@ -32,13 +33,13 @@ class _DonasiListState extends State<DonasiList> {
         horizontalGridMargin: 10,
         verticalGridMargin: 10,
         children: List.generate(
-          widget.adoptList.length,
+          widget.donasiList.length,
           (index) => GestureDetector(
             onTap: () {
               CommonWidget().movePage(
                 context,
                 DonasiDetail(
-                  productAdoptModel: widget.adoptList[index],
+                  detailDonasiResponseModel: widget.donasiList[index],
                 ),
               );
             },

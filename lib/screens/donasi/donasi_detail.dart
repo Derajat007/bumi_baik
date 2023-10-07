@@ -14,18 +14,20 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../../models/detail_donasi_respones_model.dart';
 import '../../resources/color_manager.dart';
+import '../../services/donation_service.dart';
 
 class DonasiDetail extends StatefulWidget {
-  ProductAdoptModel productAdoptModel;
-  DonasiDetail({required this.productAdoptModel, Key? key}) : super(key: key);
+  DetailDonasiResponseModel detailDonasiResponseModel;
+  DonasiDetail({required this.detailDonasiResponseModel, Key? key}) : super(key: key);
 
   @override
   State<DonasiDetail> createState() => _DonasiDetailState();
 }
 
 class _DonasiDetailState extends State<DonasiDetail> {
-  ProductAdoptModel? newData;
+  DetailDonasiResponseModel? newData;
 
   MidtransSDK? _midtrans;
 
@@ -60,8 +62,8 @@ class _DonasiDetailState extends State<DonasiDetail> {
   }
 
   getData() async {
-    newData = await ProductService()
-        .getProductAdoptDetail(widget.productAdoptModel.id!);
+    newData = await DonasiService()
+        .getDonasiDetail(widget.detailDonasiResponseModel.id!);
 
     setState(() {});
   }
@@ -548,7 +550,7 @@ class _DonasiDetailState extends State<DonasiDetail> {
   getImages() {
     List<Widget> images = [];
 
-    for (var element in widget.productAdoptModel.images!) {
+     for (var element in widget.detailDonasiResponseModel.image!) {
       images.add(
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
@@ -572,53 +574,53 @@ class _DonasiDetailState extends State<DonasiDetail> {
     return images;
   }
 
-  startTransaction() async {
-    Map<String, dynamic> data = {
-      "productId": widget.productAdoptModel.id,
-      "productName": widget.productAdoptModel.name,
-      "total": 15000,
-    };
-    try {
-      TransactionReturnModel? tr = await TransactionService().adoptTree(data);
-      String? token = tr.token;
+  // startTransaction() async {
+  //   Map<String, dynamic> data = {
+  //     "productId": widget.detailDonasiResponseModel.id,
+  //     "productName": widget.detailDonasiResponseModel.data,
+  //     "total": 15000,
+  //   };
+  //   try {
+  //     TransactionReturnModel? tr = await TransactionService().adoptTree(data);
+  //     String? token = tr.token;
 
-      try {
-        await _midtrans?.startPaymentUiFlow(
-          token: token,
-        );
+  //     try {
+  //       await _midtrans?.startPaymentUiFlow(
+  //         token: token,
+  //       );
 
-        // setState(() {
-        //   _isLoading = false;
-        // });
+  //       // setState(() {
+  //       //   _isLoading = false;
+  //       // });
 
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PaymentStatus(
-        //       orderId: orderId,
-        //       paymentStatus: true,
-        //     ),
-        //   ),
-        // );
-      } catch (e) {
-        // setState(() {
-        //   _isLoading = false;
-        // });
+  //       // Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(
+  //       //     builder: (context) => PaymentStatus(
+  //       //       orderId: orderId,
+  //       //       paymentStatus: true,
+  //       //     ),
+  //       //   ),
+  //       // );
+  //     } catch (e) {
+  //       // setState(() {
+  //       //   _isLoading = false;
+  //       // });
 
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PaymentStatus(
-        //       orderId: orderId,
-        //       paymentStatus: false,
-        //     ),
-        //   ),
-        // );
-        // ignore: use_build_context_synchronously
-        CommonDialogWidget.buildOkDialog(context, false, e.toString());
-      }
-    } catch (e) {
-      CommonDialogWidget.buildOkDialog(context, false, e.toString());
-    }
-  }
+  //       // Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(
+  //       //     builder: (context) => PaymentStatus(
+  //       //       orderId: orderId,
+  //       //       paymentStatus: false,
+  //       //     ),
+  //       //   ),
+  //       // );
+  //       // ignore: use_build_context_synchronously
+  //       CommonDialogWidget.buildOkDialog(context, false, e.toString());
+  //     }
+  //   } catch (e) {
+  //     CommonDialogWidget.buildOkDialog(context, false, e.toString());
+  //   }
+  // }
 }

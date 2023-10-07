@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../../models/detail_donasi_respones_model.dart';
 import '../../models/product_planting_model.dart';
 import '../tree_adopt/tree_adopt_detail.dart';
 
 class DonasiWidget extends StatefulWidget {
-  ProductAdoptModel? adoptModel;
-  ProductPlantingModel? plantingModel;
+  DetailDonasiResponseModel? donasiModel;
   DonasiWidget(
-      {required this.adoptModel, required this.plantingModel, Key? key})
+      {required this.donasiModel, Key? key})
       : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class _DonasiWidgetState extends State<DonasiWidget> {
   }
 
   checkWhich() {
-    if (widget.adoptModel == null) {
+    if (widget.donasiModel == null) {
       isAdopt = false;
     } else {
       isAdopt = true;
@@ -48,7 +48,7 @@ class _DonasiWidgetState extends State<DonasiWidget> {
         CommonWidget().movePage(
           context,
           DonasiDetail(
-            productAdoptModel: widget.adoptModel!,
+            detailDonasiResponseModel: widget.donasiModel!,
           ),
         );
       },
@@ -188,16 +188,6 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                 ],
               ),
             ),
-            // Container(
-            //   width: MediaQuery.of(context).size.width * 0.4,
-            //   padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-            //   child: ElevatedButton(
-            //     onPressed: () {
-            //       // Aksi yang akan dijalankan saat tombol ditekan
-            //       print('Tombol Ditekan');
-            //     }, child: null,
-            //   ),
-            // ),
           ],
         ),
       ),

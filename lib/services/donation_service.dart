@@ -1,20 +1,26 @@
 import 'dart:convert';
 
-import 'package:new_bumi_baik/models/donasi_respone_list_model.dart';
+import 'package:new_bumi_baik/models/news_model.dart';
+import 'package:new_bumi_baik/models/product_adopt_model.dart';
+import 'package:new_bumi_baik/models/product_planting_model.dart';
+import 'package:new_bumi_baik/resources/app_constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:new_bumi_baik/resources/token.dart';
-import '../models/donasi_respone_detail_model.dart';
-import '../resources/app_constants.dart';
 
-class DonationService {
-  String url = AppConstants.apiUrl;
-  Future<List<Donasi>> getProductPlanting() async {
-    String donasiListUrl = "$url/donations";
+import '../models/detail_donasi_respones_model.dart';
+import '../models/list_donasi_response_model.dart';
+import '../resources/token.dart';
+
+class DonasiService {
+  String productUrl = "${AppConstants.apiUrl}";
+
+  Future<List<ListDonasiResponseModel>> getListDonasi() async {
+    String url = "$productUrl/donations";
+
     print(url);
 
     try {
       final response = await http.get(
-        Uri.parse(donasiListUrl),
+        Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Cache-control': 'no-cache',
@@ -25,10 +31,10 @@ class DonationService {
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body)['data'];
-        List<Donasi> newsData = [];
+        List<ListDonasiResponseModel> newsData = [];
 
         for (var item in data) {
-          newsData.add(Donasi.fromJson(item));
+          newsData.add(ListDonasiResponseModel.fromJson(item));
         }
 
         return newsData;
@@ -42,14 +48,15 @@ class DonationService {
     }
   }
 
-  Future<DonasiDetail> getProductAdoptDetail(int id) async {
-    String donasiDetailUrl = "$url/donations/$id";
+
+  Future<DetailDonasiResponseModel> getDonasiDetail(int id) async {
+    String url = "$productUrl/donations/$id";
 
     print(url);
 
     try {
       final response = await http.get(
-        Uri.parse(donasiDetailUrl),
+        Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Cache-control': 'no-cache',
@@ -61,7 +68,7 @@ class DonationService {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body)['data'];
 
-        return DonasiDetail.fromJson(data);
+        return DetailDonasiResponseModel.fromJson(data);
       } else {
         print(response.statusCode);
         throw Exception("ehe");

@@ -20,6 +20,7 @@ import 'package:new_bumi_baik/splashscreen.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/detail_donasi_respones_model.dart';
 import '../../models/product_adopt_model.dart';
 import '../../services/news_service.dart';
 import '../widgets/news_widget.dart';
@@ -35,6 +36,7 @@ class HomeMenu extends StatefulWidget {
 class _HomeMenuState extends State<HomeMenu> {
   List<ProductPlantingModel>? productPlantingList;
   List<ProductAdoptModel>? productAdoptList;
+  List<DetailDonasiResponseModel>? detailDonasiResponseModel;
   List<ProjectModel>? projectList;
   List<NewsModel>? news;
 
@@ -263,7 +265,7 @@ class _HomeMenuState extends State<HomeMenu> {
                 CommonWidget().movePage(
                   context,
                   DonasiList(
-                    adoptList: productAdoptList!,
+                    donasiList: detailDonasiResponseModel!,
                   ),
                 );
               },
@@ -271,7 +273,7 @@ class _HomeMenuState extends State<HomeMenu> {
           ],
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-        productAdoptList == null
+        detailDonasiResponseModel == null
             ? SizedBox(
                 height: MediaQuery.of(context).size.height * 0.37,
                 child: CommonShimmerWidget().buildProductItemShimmer(context),
@@ -282,11 +284,11 @@ class _HomeMenuState extends State<HomeMenu> {
                   controller: scrollController1,
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: productAdoptList!.length,
+                  itemCount: detailDonasiResponseModel!.length,
                   itemBuilder: (context, index) {
                     return DonasiWidget(
-                      adoptModel: productAdoptList![index],
-                      plantingModel: null,
+                      donasiModel: detailDonasiResponseModel![index],
+                      // plantingModel: null,
                     );
                   },
                 ),
