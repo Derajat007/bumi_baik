@@ -28,7 +28,8 @@ class _DaftarState extends State<Register> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  String? selectedValue;
+  late String selectedValue = gender.first;
+  List<String> gender = ["None", "Female", "Male"];
 
   bool _isObscure = true;
 
@@ -134,25 +135,40 @@ class _DaftarState extends State<Register> {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.all(15),
-                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                          // decoration: BoxDecoration(
-                            
-                          // ),
-                          child: DropdownButton<String?>(
-                            value: selectedValue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedValue = value;
-                              });
-                            },
-                            underline: SizedBox(),
-                            isExpanded: true,
-                            items: ["Perempuan", "Laki - Laki"]
-                            .map<DropdownMenuItem<String?>>((e) => DropdownMenuItem(child: Text(e.toString()),
-                            value: e,)).toList()
-                          ),
-                        ),
+                            margin: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              // borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(
+                                  color: Colors.black,
+                                  style: BorderStyle.solid,
+                                  width: 0.70),
+                            ),
+                            // decoration: BoxDecoration(
+                            // ),
+                            child: DropdownButton<String?>(
+                              hint: const Text('Gender'),
+                              value: selectedValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedValue = value ?? "";
+                                });
+                              },
+                              underline: const SizedBox(),
+                              isExpanded: true,
+                              items: gender
+                                  .map<DropdownMenuItem<String?>>(
+                                    (e) => DropdownMenuItem(
+                                      child: Text(
+                                        e.toString(),
+                                      ),
+                                      value: e,
+                                    ),
+                                  )
+                                  .toList(),
+                            )
+                            // print();),
+                            ),
                         Container(
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
@@ -303,6 +319,7 @@ class _DaftarState extends State<Register> {
                                 });
 
                                 registerUser();
+                                print(selectedValue);
                               }
                             },
                           ),
@@ -350,10 +367,11 @@ class _DaftarState extends State<Register> {
       'name': nameController.text.trim(),
       'email': emailController.text.trim(),
       'telp': phoneController.text.trim(),
+      'gender': selectedValue,
       'password': passwordController.text.trim(),
       'password_confirm': confirmPasswordController.text.trim(),
     };
-
+    print(data["gender"]);
     try {
       AuthResponseModel? res = await AuthService().register(data);
 
@@ -371,6 +389,7 @@ class _DaftarState extends State<Register> {
           passwordController.text.trim(),
           res.accessToken!,
           true,
+          user.gender!,
         );
 
         setState(() {

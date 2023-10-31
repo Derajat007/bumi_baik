@@ -290,7 +290,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: ElevatedButton(
               onPressed: () {
-                CommonMethod().saveUserLoginsDetails(0, "", "", "", "", false);
+                CommonMethod()
+                    .saveUserLoginsDetails(0, "", "", "", "", false, "");
 
                 Navigator.of(context, rootNavigator: true).pop();
 

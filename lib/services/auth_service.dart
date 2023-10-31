@@ -25,6 +25,7 @@ class AuthService {
           'name': data['name'],
           'email': data['email'],
           'telp': data['telp'],
+          'gender': data['gender'],
           'password': data['password'],
           'password_confirm': data['password_confirm'],
         }),

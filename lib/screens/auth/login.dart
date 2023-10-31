@@ -246,6 +246,7 @@ class _LoginState extends State<Login> {
           passwordController.text.trim(),
           res.accessToken!,
           true,
+          user.gender!,
         );
 
         setState(() {
