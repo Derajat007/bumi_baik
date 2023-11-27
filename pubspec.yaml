@@ -63,6 +63,7 @@ dev_dependencies:
   flutter_dotenv: ^5.0.2
   midtrans_sdk: ^0.3.4
   image_picker: ^1.0.2
+  syncfusion_flutter_datepicker: ^23.1.44
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

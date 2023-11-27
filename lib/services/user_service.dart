@@ -38,7 +38,7 @@ class UserService {
     }
   }
 
-  Future<String> updateUserDetails(Map<String, dynamic> data) async {
+  Future<void> updateUserDetails(Map<String, dynamic> data) async {
     String url = userUrl;
 
     print(url);
@@ -62,10 +62,10 @@ class UserService {
       );
 
       if (response.statusCode == 500) {
-        return response.body.toString();
+        // return response.body.toString();
       } else {
         print(response.statusCode);
-        throw Exception("ehe");
+        // throw Exception("ehe");
       }
     } catch (e) {
       print(e);

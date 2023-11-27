@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_bumi_baik/services/user_service.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart';
 
 class EditProfile extends StatefulWidget {
   UserModel userModel;
@@ -29,6 +31,7 @@ class _EditProfileState extends State<EditProfile> {
   dynamic _pickImageError;
   bool isLoading = false;
   XFile? _imageFile;
+  late DateTime selectedDate;
 
   void _setImageFileListFromFile(XFile? value) {
     _imageFile = value;
@@ -51,6 +54,18 @@ class _EditProfileState extends State<EditProfile> {
         _pickImageError = e;
       });
     }
+  }
+
+  void _showDatePicker() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2025),
+    );
+
+    selectedDate = date ?? DateTime.parse(widget.userModel.birthDate);
+    setState(() {});
   }
 
   @override
@@ -78,6 +93,7 @@ class _EditProfileState extends State<EditProfile> {
       addressController.text = widget.userModel.address ?? "";
       phoneController.text = widget.userModel.telp ?? "";
       selectedValue = widget.userModel.gender ?? gender.first;
+      selectedDate = DateTime.parse(widget.userModel.birthDate);
     });
   }
 
@@ -398,8 +414,42 @@ class _EditProfileState extends State<EditProfile> {
                   )
                   // print();),
                   ),
+              SizedBox(height: 20, width: MediaQuery.of(context).size.width),
+              Text("Tanggal Lahir",
+                  style: Theme.of(context).textTheme.subtitle2),
+              SizedBox(height: 15, width: MediaQuery.of(context).size.width),
+              Container(
+                height: 55,
+                padding: const EdgeInsets.only(left: 9, top: 3),
+                decoration: BoxDecoration(
+                  // borderRadius: BorderRadius.circular(15.0),
+                  border: Border.all(
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                      width: 0.70),
+                ),
+                child: MaterialButton(
+                  onPressed: _showDatePicker,
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Icon(
+                      //   Icons.calendar_month,
+                      //   color: ColorManager.primary,
+                      // ),
+                      // SizedBox(
+                      //   width: 4,
+                      // ),
+                      Text(
+                        DateFormat('yyyy-MM-dd').format(selectedDate!),
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               Container(
                 height: 50,
@@ -419,14 +469,23 @@ class _EditProfileState extends State<EditProfile> {
                         )
                       : const Text('SIMPAN'),
                   onPressed: () async {
-                    String test = await UserService().updateUserDetails({
-                      "name": nameController.text,
-                      "email": emailController.text,
-                      "telp": phoneController.text,
-                      "birth_date": "10/24/2001",
-                      "gender": selectedValue,
-                    });
-                    print(test);
+                    await UserService().updateUserDetails(
+                      {
+                        "name": nameController.text,
+                        "email": emailController.text,
+                        "telp": phoneController.text,
+                        "birth_date":
+                            DateFormat('yyyy-MM-dd').format(selectedDate),
+                        "gender": selectedValue,
+                      },
+                    );
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                    ;
+                    await UserService().getUserDetails();
+                    // print(test);
+                    print(selectedDate);
                   },
                 ),
               ),
