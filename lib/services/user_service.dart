@@ -37,4 +37,39 @@ class UserService {
       rethrow;
     }
   }
+
+  Future<void> updateUserDetails(Map<String, dynamic> data) async {
+    String url = userUrl;
+
+    print(url);
+
+    try {
+      final response = await http.put(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-control': 'no-cache',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $globalAccessToken',
+        },
+        body: jsonEncode(<String, String>{
+          'name': data['name'],
+          'email': data['email'],
+          'telp': data['telp'],
+          'birth_date': data['birth_date'],
+          'gender': data['gender'],
+        }),
+      );
+
+      if (response.statusCode == 500) {
+        // return response.body.toString();
+      } else {
+        print(response.statusCode);
+        // throw Exception("ehe");
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 }
