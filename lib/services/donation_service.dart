@@ -6,12 +6,13 @@ import 'package:new_bumi_baik/models/product_planting_model.dart';
 import 'package:new_bumi_baik/resources/app_constants.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/detail_donasi_respones_model.dart';
+import '../models/detail_donasi_response_model.dart';
 import '../models/list_donasi_response_model.dart';
 import '../resources/token.dart';
 
 class DonasiService {
   String productUrl = "${AppConstants.apiUrl}";
+  // String productUrl1 = "${AppConstants.apiUrl1}";
 
   Future<List<ListDonasiResponseModel>> getListDonasi() async {
     String url = "$productUrl/donations";
@@ -49,7 +50,7 @@ class DonasiService {
   }
 
 
-  Future<DetailDonasiResponseModel> getDonasiDetail(int id) async {
+  Future<ListDonasiResponseModel> getDonasiDetail(int id) async {
     String url = "$productUrl/donations/$id";
 
     print(url);
@@ -68,7 +69,7 @@ class DonasiService {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body)['data'];
 
-        return DetailDonasiResponseModel.fromJson(data);
+        return ListDonasiResponseModel.fromJson(data);
       } else {
         print(response.statusCode);
         throw Exception("ehe");

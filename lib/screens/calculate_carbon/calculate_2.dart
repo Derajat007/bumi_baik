@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../common/common_dialog_widget.dart';
 import '../../common/common_shimmer_widget.dart';
-import '../../models/detail_donasi_respones_model.dart';
+import '../../models/detail_donasi_response_model.dart';
+import '../../models/list_donasi_response_model.dart';
 import '../../models/product_adopt_model.dart';
 import '../../models/user_model.dart';
 import '../../resources/color_manager.dart';
@@ -25,7 +26,7 @@ class Calculate2 extends StatefulWidget {
 
 class _Calculate2State extends State<Calculate2> {
   List<ProductAdoptModel>? productAdoptList;
-  List<DetailDonasiResponseModel>? detailDonasiResponseModel;
+  List<ListDonasiResponseModel>? productDonasiList;
   final ScrollController? scrollController1 = ScrollController();
   @override
   void initState() {
@@ -207,7 +208,7 @@ class _Calculate2State extends State<Calculate2> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DonasiList(
-                                  donasiList: detailDonasiResponseModel!,
+                                  donasiList: productDonasiList!,
                                 ),
                               ),
                             );

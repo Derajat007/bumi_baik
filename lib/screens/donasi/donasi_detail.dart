@@ -13,21 +13,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
-import '../../models/detail_donasi_respones_model.dart';
+import '../../models/detail_donasi_response_model.dart';
+import '../../models/list_donasi_response_model.dart';
 import '../../resources/color_manager.dart';
 import '../../services/donation_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class DonasiDetail extends StatefulWidget {
-  DetailDonasiResponseModel detailDonasiResponseModel;
-  DonasiDetail({required this.detailDonasiResponseModel, Key? key}) : super(key: key);
+  ListDonasiResponseModel productDonasiModel;
+  DonasiDetail({required this.productDonasiModel, Key? key}) : super(key: key);
 
   @override
   State<DonasiDetail> createState() => _DonasiDetailState();
 }
 
 class _DonasiDetailState extends State<DonasiDetail> {
-  DetailDonasiResponseModel? newData;
+  ListDonasiResponseModel? newData;
 
   MidtransSDK? _midtrans;
 
@@ -62,8 +64,8 @@ class _DonasiDetailState extends State<DonasiDetail> {
   }
 
   getData() async {
-    newData = await DonasiService()
-        .getDonasiDetail(widget.detailDonasiResponseModel.id!);
+    newData =
+        await DonasiService().getDonasiDetail(widget.productDonasiModel.id!);
 
     setState(() {});
   }
@@ -126,6 +128,20 @@ class _DonasiDetailState extends State<DonasiDetail> {
 
   @override
   Widget build(BuildContext context) {
+    String imagePath =
+        "https://bumibaik.com/storage/" + widget.productDonasiModel.image!;
+    double progress1;
+    int Linkid = widget.productDonasiModel.id!;
+
+    //contoh tanggal
+    DateTime dueDate1 = widget.productDonasiModel.due_date!;
+
+    // Format Tanggal
+    String formattedDate = DateFormat.yMMMMd().format(dueDate1);
+
+    // Pisahkan Tanggal
+    List<String> dateParts = formattedDate.split(' ');
+
     return Scaffold(
       appBar: CommonWidget.buildCommonAppbar(
         context,
@@ -138,24 +154,16 @@ class _DonasiDetailState extends State<DonasiDetail> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  'assets/images/spanduk_donasi.png', // Ganti dengan path gambar Anda
-                  fit: BoxFit.cover,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  width: double.infinity,
+                  child: FancyShimmerImage(
+                    boxFit: BoxFit.cover,
+                    imageUrl: imagePath,
+                    errorWidget: Image.network(
+                        'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
+                  ),
                 ),
-                // ImageSlideshow(
-                //   indicatorRadius: 5,
-                //   width: double.infinity,
-                //   height: MediaQuery.of(context).size.height * 0.5,
-                //   initialPage: 0,
-                //   indicatorColor: ColorManager.primary,
-                //   indicatorBackgroundColor: Colors.grey,
-                //   // onPageChanged: (value) {
-                //   //   debugPrint('Page changed: $value');
-                //   // },
-                //   autoPlayInterval: 3000,
-                //   isLoop: true,
-                //   children: getImages(),
-                // ),
                 newData == null
                     ? SizedBox(
                         height: MediaQuery.of(context).size.height * 0.3,
@@ -174,7 +182,11 @@ class _DonasiDetailState extends State<DonasiDetail> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Rp. 2,000 / Rp. 5,000,000 ",
+                              "Rp. " +
+                                  widget.productDonasiModel.collected!
+                                      .toString() +
+                                  " /  Rp. " +
+                                  widget.productDonasiModel.target!.toString(),
                               textAlign: TextAlign.left,
                               style: Theme.of(context)
                                   .textTheme
@@ -190,317 +202,146 @@ class _DonasiDetailState extends State<DonasiDetail> {
                               animation: true,
                               animationDuration: 1000,
                               lineHeight: 20.0,
-                              // leading: new Text("left content"),
-                              // trailing: new Text("right content"),
-                              percent: 0.2,
-                              center: Text("20.0%"),
+                              percent: progress1 =
+                                  widget.productDonasiModel.progress! / 100,
+                              center: Text(widget.productDonasiModel.progress!
+                                      .toString() +
+                                  " %"),
                               linearStrokeCap: LinearStrokeCap.butt,
                               progressColor: Colors.blue,
                             ),
                             const SizedBox(height: 20),
-                            Table(
-                              // border: TableBorder.all(color: Colors.black),
-                              defaultVerticalAlignment:
-                                  TableCellVerticalAlignment.middle,
-                              children: const [
-                                TableRow(
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 5),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Detail',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                  ),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.005,
+                                  color: ColorManager.blue,
+                                ),
+                                const SizedBox(height: 25),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Donasi',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24),
-                                        ),
-                                      ),
+                                    Text(
+                                      "Kelompok Tani :  ",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '',
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
+                                    Text(
+                                      widget.productDonasiModel.nama_ukm!,
+                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ],
                                 ),
-                                TableRow(
+                                const SizedBox(height: 15),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'UMK Tani :',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
+                                    Text(
+                                      "Lokasi :  ",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Cempaka Foundatiion',
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
+                                    Text(
+                                      widget.productDonasiModel.nama_lokasi!,
+                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ],
                                 ),
-                                TableRow(
+                                const SizedBox(height: 15),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Lokasi :',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
+                                    Text(
+                                      "Jenis Pohon :  ",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Graha Polinema 4th Floor',
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
+                                    Text(
+                                      '',
+                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ],
                                 ),
-                                TableRow(
+                                const SizedBox(height: 15),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Jenis Pohon :',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
+                                    Text(
+                                      "Batas Donasi :  ",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '-',
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
+                                    Text(
+                                      dueDate1.toString(),
+                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ],
                                 ),
-                                TableRow(
+                                const SizedBox(height: 15),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Batas Donasi :',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
+                                    Text(
+                                      "Penanaman :  ",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '2023-09-09',
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
+                                    Text(
+                                      '-',
+                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ],
                                 ),
-                                TableRow(
+                                const SizedBox(height: 15),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Penanaman :',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
+                                    Text(
+                                      "Mitra Penanaman :  ",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
                                     ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '-',
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
+                                    Text(
+                                      widget.productDonasiModel.nama_mitra!,
+                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                            // Text(
-                            //   "UKM Tani :",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ),
-                            // const SizedBox(height: 10),
-                            // const Divider(
-                            //   thickness: 1,
-                            // ),
-                            // const SizedBox(height: 10),
-                            // Text(
-                            //   "Lokasi :",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ),
-                            // const SizedBox(height: 10),
-                            // const Divider(
-                            //   thickness: 1,
-                            // ),
-                            // const SizedBox(height: 10),
-                            // Text(
-                            //   "Jenis Pohon :",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ),
-                            // const SizedBox(height: 10),
-                            // const Divider(
-                            //   thickness: 1,
-                            // ),
-                            // const SizedBox(height: 10),
-                            // Text(
-                            //   "Batas Donasi :",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ),
-                            // const SizedBox(height: 10),
-                            // const Divider(
-                            //   thickness: 1,
-                            // ),
-                            // const SizedBox(height: 10),
-                            // Text(
-                            //   "Penanaman :",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ), ////penanaman
-                            // const SizedBox(height: 10),
-                            // Text(
-                            //   newData!.detail!,
-                            // ),
-                            // const SizedBox(height: 20),
-                            // Text(
-                            //   "Lokasi",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ),
-                            // const SizedBox(height: 10),
-                            // Text(
-                            //   newData!.location!,
-                            // ),
-                            // const SizedBox(height: 20),
-                            // Text(
-                            //   "Sisa Kuota",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ),
-                            // const SizedBox(height: 10),
-                            // Text(
-                            //   newData!.quota!.toString(),
-                            // ),
-                            // const SizedBox(height: 20),
-                            // Text(
-                            //   "Donasi",
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline5
-                            //       ?.copyWith(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 17,
-                            //       ),
-                            // ),
-                            // const SizedBox(height: 10),
-                            // const SizedBox(
-                            //   height: 50,
-                            //   child: TextField(
-                            //     decoration: InputDecoration(
-                            //       labelText: 'Masukkan nominal donasi',
-                            //       border: OutlineInputBorder(),
-                            //     ),
-                            //   ),
-                            // ),
                             const SizedBox(height: 35),
                             SizedBox(
                               height: 50,
@@ -511,30 +352,59 @@ class _DonasiDetailState extends State<DonasiDetail> {
                                       ColorManager.primary, // background
                                   foregroundColor: Colors.white, // foreground
                                 ),
-                                child: isLoading
-                                    ? const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    : const Text('Donasi Sekarang'),
-                                onPressed: () async {
-                                  // // CommonDialogWidget.buildOkDialog(
-                                  // //     context,
-                                  // //     false,
-                                  // //     "Fitur pembayaran masih dalam tahap pengembangan.");
-                                  // if (_selectedIndex == null) {
-                                  //   CommonDialogWidget.buildOkDialog(
-                                  //       context,
-                                  //       false,
-                                  //       "Harap pilih nominal pembelian terlebih dahulu.");
-                                  // } else {
-                                  //   startTransaction();
-                                  // }
+                                onPressed: () {
+                                  // Buka URL di browser
+                                  launch(
+                                      'https://bumibaik.com/donate-payment/' +
+                                          Linkid.toString());
                                 },
+                                child: Text('Donasi Sekarang'),
                               ),
-                            ),
+                            )
+
+                            // const SizedBox(height: 35),
+                            //  Column(
+                            //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //       children: [
+                            //         // LaunchButton
+                            //       ],
+                            //     ),
+
+                            // const SizedBox(height: 35),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: 200,
+                            //   child:
+                            //   ElevatedButton(
+                            //     style: ElevatedButton.styleFrom(
+                            //       backgroundColor:
+                            //           ColorManager.primary, // background
+                            //       foregroundColor: Colors.white, // foreground
+                            //     ),
+                            //     child: isLoading
+                            //         ? const Padding(
+                            //             padding: EdgeInsets.all(8.0),
+                            //             child: CircularProgressIndicator(
+                            //               color: Colors.white,
+                            //             ),
+                            //           )
+                            //         : const Text('Donasi Sekarang'),
+                            //     onPressed: () async {
+                            //       // // CommonDialogWidget.buildOkDialog(
+                            //       // //     context,
+                            //       // //     false,
+                            //       // //     "Fitur pembayaran masih dalam tahap pengembangan.");
+                            //       // if (_selectedIndex == null) {
+                            //       //   CommonDialogWidget.buildOkDialog(
+                            //       //       context,
+                            //       //       false,
+                            //       //       "Harap pilih nominal pembelian terlebih dahulu.");
+                            //       // } else {
+                            //       //   startTransaction();
+                            //       // }
+                            //     },
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -548,36 +418,32 @@ class _DonasiDetailState extends State<DonasiDetail> {
   }
 
   getImages() {
-    List<Widget> images = [];
+    List<Widget> image = [];
 
-     for (var element in widget.detailDonasiResponseModel.image!) {
-      images.add(
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
-          width: double.infinity,
-          child: Image.asset(
-            'assets/images/coba1.png', // Ganti dengan path gambar Anda
-            fit: BoxFit.cover,
-          ),
-          //  FancyShimmerImage(
-          //   boxFit: BoxFit.cover,
-          //   imageUrl: element,
-          //   errorWidget: Image.network(
-          //       'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
-          // ),
+    image.add(
+      SizedBox(
+        height: MediaQuery.of(context).size.height * 0.5,
+        width: double.infinity,
+        child: Image.asset(
+          'assets/images/coba1.png', // Ganti dengan path gambar Anda
+          fit: BoxFit.cover,
         ),
-      );
+        //  FancyShimmerImage(
+        //   boxFit: BoxFit.cover,
+        //   imageUrl: element,
+        //   errorWidget: Image.network(
+        //       'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
+        // ),
+      ),
+    );
 
-      setState(() {});
-    }
-
-    return images;
+    setState(() {});
   }
 
   // startTransaction() async {
   //   Map<String, dynamic> data = {
-  //     "productId": widget.detailDonasiResponseModel.id,
-  //     "productName": widget.detailDonasiResponseModel.data,
+  //     "productId": widget.productDonasiModel.id,
+  //     "productName": widget.productDonasiModel.data,
   //     "total": 15000,
   //   };
   //   try {

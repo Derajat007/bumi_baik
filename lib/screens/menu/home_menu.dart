@@ -20,8 +20,10 @@ import 'package:new_bumi_baik/splashscreen.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/detail_donasi_respones_model.dart';
+import '../../models/detail_donasi_response_model.dart';
+import '../../models/list_donasi_response_model.dart';
 import '../../models/product_adopt_model.dart';
+import '../../services/donation_service.dart';
 import '../../services/news_service.dart';
 import '../widgets/news_widget.dart';
 
@@ -36,7 +38,7 @@ class HomeMenu extends StatefulWidget {
 class _HomeMenuState extends State<HomeMenu> {
   List<ProductPlantingModel>? productPlantingList;
   List<ProductAdoptModel>? productAdoptList;
-  List<DetailDonasiResponseModel>? detailDonasiResponseModel;
+  List<ListDonasiResponseModel>? productDonasiList;
   List<ProjectModel>? projectList;
   List<NewsModel>? news;
 
@@ -65,6 +67,7 @@ class _HomeMenuState extends State<HomeMenu> {
       try {
         productAdoptList = await ProductService().getProductAdopt();
         productPlantingList = await ProductService().getProductPlanting();
+        productDonasiList = await DonasiService().getListDonasi();
 
         setState(() {});
       } catch (e) {
@@ -114,9 +117,9 @@ class _HomeMenuState extends State<HomeMenu> {
         // buildTanamPohon(),
         // SizedBox(height: MediaQuery.of(context).size.height * 0.03),
         buildDonasiPohon(),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
         buildBerita(),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
       ],
     );
   }
@@ -265,7 +268,7 @@ class _HomeMenuState extends State<HomeMenu> {
                 CommonWidget().movePage(
                   context,
                   DonasiList(
-                    donasiList: detailDonasiResponseModel!,
+                    donasiList: productDonasiList!,
                   ),
                 );
               },
@@ -273,21 +276,22 @@ class _HomeMenuState extends State<HomeMenu> {
           ],
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-        detailDonasiResponseModel == null
+        productDonasiList == null
             ? SizedBox(
                 height: MediaQuery.of(context).size.height * 0.37,
                 child: CommonShimmerWidget().buildProductItemShimmer(context),
               )
             : SizedBox(
-                height: MediaQuery.of(context).size.height * 0.43,
+                height: MediaQuery.of(context).size.height * 0.37,
                 child: ListView.builder(
                   controller: scrollController1,
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: detailDonasiResponseModel!.length,
+                  itemCount: productDonasiList!.length,
                   itemBuilder: (context, index) {
                     return DonasiWidget(
-                      donasiModel: detailDonasiResponseModel![index],
+                      donasiModel: productDonasiList![index],
+                      // news: null,
                       // plantingModel: null,
                     );
                   },

@@ -10,45 +10,57 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import '../../models/detail_donasi_respones_model.dart';
+import '../../models/detail_donasi_response_model.dart';
+import '../../models/list_donasi_response_model.dart';
 import '../../models/product_planting_model.dart';
+import '../../services/donation_service.dart';
 import '../tree_adopt/tree_adopt_detail.dart';
+import 'package:intl/intl.dart';
 
 class DonasiWidget extends StatefulWidget {
-  DetailDonasiResponseModel? donasiModel;
+  ListDonasiResponseModel? donasiModel;
   DonasiWidget(
       {required this.donasiModel, Key? key})
       : super(key: key);
+
 
   @override
   State<DonasiWidget> createState() => _DonasiWidgetState();
 }
 
 class _DonasiWidgetState extends State<DonasiWidget> {
-  bool isAdopt = false;
+  bool isDonasi = false;
 
   @override
   void initState() {
     checkWhich();
+
     super.initState();
   }
 
   checkWhich() {
     if (widget.donasiModel == null) {
-      isAdopt = false;
+      isDonasi = false;
     } else {
-      isAdopt = true;
+      isDonasi = true;
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    String imagePath = "https://bumibaik.com/storage/" + widget.donasiModel!.image!;
+    double progress1;
+    DateTime tanggal = widget.donasiModel!.due_date!;
+
+    int remainingDays = calculateRemainingDays(tanggal);
+
     return GestureDetector(
       onTap: () {
         CommonWidget().movePage(
           context,
           DonasiDetail(
-            detailDonasiResponseModel: widget.donasiModel!,
+            productDonasiModel: widget.donasiModel!,
           ),
         );
       },
@@ -65,18 +77,12 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
-                child: Image.asset(
-                  'assets/images/spanduk_donasi.png', // Ganti dengan path gambar Anda
-                  fit: BoxFit.cover,
+                child: FancyShimmerImage(
+                  boxFit: BoxFit.cover,
+                  imageUrl: imagePath,
+                  errorWidget: Image.network(
+                      'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
                 ),
-                // FancyShimmerImage(
-                //   boxFit: BoxFit.cover,
-                //   imageUrl: isAdopt
-                //       ? widget.adoptModel!.images![0]
-                //       : widget.plantingModel!.images![0],
-                //   errorWidget: Image.network(
-                //       'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
-                // ),
               ),
             ),
             Container(
@@ -88,26 +94,19 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                 children: [
                   const SizedBox(height: 10),
                   Text(
-                    "Save Earth with K-POPERS INDONESIA",
-                    // isAdopt
-                    //     ? widget.adoptModel!.name!
-                    //     : widget.plantingModel!.name!,
-                    // overflow: TextOverflow.ellipsis,
-                    // softWrap: true,
+                    widget.donasiModel!.title!,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                           color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Text(
-                    "UKM Tani: Cempaka Foundatiion",
-                    // isAdopt
-                    //     ? widget.adoptModel!.name!
-                    //     : widget.plantingModel!.name!,
-                    // overflow: TextOverflow.ellipsis,
-                    // softWrap: true,
+                    widget.donasiModel!.nama_ukm!,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                           color: Colors.black,
                           fontSize: 12,
@@ -118,29 +117,30 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                     width: 144.0,
                     animation: true,
                     animationDuration: 1000,
-                    lineHeight: 13.0,
+                    lineHeight: 11.0,
                     // leading: new Text("left content"),
                     // trailing: new Text("right content"),
-                    percent: 0.2,
-                    center: const Text(
-                      "20.0%",
+                    percent: progress1 = widget.donasiModel!.progress! / 100,
+                    center: Text(
+                      widget.donasiModel!.progress.toString(),
                       style: TextStyle(fontSize: 10),
                     ),
                     linearStrokeCap: LinearStrokeCap.butt,
                     progressColor: Colors.blue,
                   ),
                   const SizedBox(height: 15),
-                  const Row(
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Rp. 45,000',
-                        style: TextStyle(
+                        "Rp "  + widget.donasiModel!.collected.toString(),
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12),
                       ),
                       Text(
-                        '151 hari lagi',
+                        remainingDays.toString() + ' hari lagi',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12),
@@ -150,11 +150,6 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                   const SizedBox(height: 10),
                   Text(
                     "Pohon terkumpul",
-                    // isAdopt
-                    //     ? widget.adoptModel!.name!
-                    //     : widget.plantingModel!.name!,
-                    // overflow: TextOverflow.ellipsis,
-                    // softWrap: true,
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                           color: Colors.black,
                           fontSize: 12,
@@ -192,5 +187,18 @@ class _DonasiWidgetState extends State<DonasiWidget> {
         ),
       ),
     );
+  }
+
+  int calculateRemainingDays(DateTime donationDate) {
+    // Ambil tanggal sekarang
+    DateTime now = DateTime.now();
+
+    // Hitung selisih hari
+    Duration difference = donationDate.difference(now);
+
+    // Konversi selisih hari ke dalam bentuk integer
+    int remainingDays = difference.inDays;
+
+    return remainingDays;
   }
 }

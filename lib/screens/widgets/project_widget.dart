@@ -40,6 +40,8 @@ class _ProjectWidgetState extends State<ProjectWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String imagePath= widget.projectModel!.photo!;
+
     return GestureDetector(
       onTap: () {
         CommonWidget().movePage(
@@ -62,9 +64,11 @@ class _ProjectWidgetState extends State<ProjectWidget> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
-                child: FancyShimmerImage(
+                child:
+                // Image.asset('assets/images/spanduk_donasi.png'),
+                FancyShimmerImage(
                   boxFit: BoxFit.cover,
-                  imageUrl: "",
+                  imageUrl: imagePath,
                   errorWidget: Image.network(
                       'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
                 ),
