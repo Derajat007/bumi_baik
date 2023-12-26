@@ -163,14 +163,14 @@ class _CarbonMenuState extends State<CarbonMenu> {
                   // ),
                   ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-              Text(
-                carbon == null
-                    ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
-                    : carbon!.offset == null
-                        ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
-                        : "Pelunasan karbon kamu telah mencapai ${carbon!.offset!}% dari total jejak karbon dalam setahun terakhir",
-                style: const TextStyle(color: Colors.black),
-              ),
+              // Text(
+              //   carbon == null
+              //       ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
+              //       : carbon!.offset == null
+              //           ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
+              //           : "Pelunasan karbon kamu telah mencapai ${carbon!.offset!}% dari total jejak karbon dalam setahun terakhir",
+              //   style: const TextStyle(color: Colors.black),
+              // ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Text(
                 carbon == null
