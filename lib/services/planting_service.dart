@@ -1,21 +1,55 @@
 import 'dart:convert';
 
-import 'package:new_bumi_baik/models/user_model.dart';
-import 'package:new_bumi_baik/resources/app_constants.dart';
-import 'package:new_bumi_baik/resources/token.dart';
+import 'package:new_bumi_baik/models/donasi_respone_list_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_bumi_baik/resources/token.dart';
+import '../models/donasi_respone_detail_model.dart';
+import '../resources/app_constants.dart';
 
-class UserService {
-  String userUrl = "${AppConstants.apiUrl}/users";
+class PlantingService {
+  String url = AppConstants.apiUrl;
+  Future<List<Donasi>> getProductPlanting() async {
+    String plantingListUrl = "$url/donations";
+    print(url);
 
-  Future<UserModel> getUserDetails() async {
-    String url = userUrl;
+    try {
+      final response = await http.get(
+        Uri.parse(plantingListUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cache-control': 'no-cache',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $globalAccessToken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body)['data'];
+        List<Donasi> newsData = [];
+
+        for (var item in data) {
+          newsData.add(Donasi.fromJson(item));
+        }
+
+        return newsData;
+      } else {
+        print(response.statusCode);
+        throw Exception("ehe");
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<DonasiDetail> getProductAdoptDetail(int id) async {
+    String donasiDetailUrl = "$url/donations/$id";
 
     print(url);
 
     try {
       final response = await http.get(
-        Uri.parse(url),
+        Uri.parse(donasiDetailUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Cache-control': 'no-cache',
@@ -27,45 +61,10 @@ class UserService {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body)['data'];
 
-        return UserModel.fromJson(data);
+        return DonasiDetail.fromJson(data);
       } else {
         print(response.statusCode);
         throw Exception("ehe");
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<void> updateUserDetails(Map<String, dynamic> data) async {
-    String url = userUrl;
-
-    print(url);
-
-    try {
-      final response = await http.put(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Cache-control': 'no-cache',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $globalAccessToken',
-        },
-        body: jsonEncode(<String, String>{
-          'name': data['name'],
-          'email': data['email'],
-          'telp': data['telp'],
-          'birth_date': data['birth_date'],
-          'gender': data['gender'],
-        }),
-      );
-
-      if (response.statusCode == 500) {
-        // return response.body.toString();
-      } else {
-        print(response.statusCode);
-        // throw Exception("ehe");
       }
     } catch (e) {
       print(e);

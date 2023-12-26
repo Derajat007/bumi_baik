@@ -97,6 +97,7 @@ class _SplashscreenState extends State<Splashscreen> {
           password!,
           res.accessToken!,
           true,
+          user.gender!,
         );
 
         await getCarbonData();
