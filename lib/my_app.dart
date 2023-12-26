@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BumiBaik',
       home: Splashscreen(),
+      // home: CarbonMenu(),
       // home: Calculate2(
       //   result: CarbonCalculationResultModel(unit: 'unit', result: 3.0),
       //   userModel: UserModel(
