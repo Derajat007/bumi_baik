@@ -86,7 +86,7 @@ class _CarbonMenuState extends State<CarbonMenu> {
               mode: LaunchMode.externalApplication,
             );
           },
-          label: const Text('Daftar Pohon Kamu'),
+          label: const Text('Data Detail Project '),
           icon: const Icon(
             FontAwesomeIcons.mapPin,
           ),
@@ -122,7 +122,7 @@ class _CarbonMenuState extends State<CarbonMenu> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Text(
                 // ignore: prefer_interpolation_to_compose_strings
-                "Total Jejak karbon kamu dalam setahun terakhir adalah " +
+                "Total Jejak Karbon Dalam Project Penanaman adalah " +
                     (carbon == null ? "-" : carbon!.emision!.toString()) +
                     " Kg ",
                 style: const TextStyle(color: Colors.black),
