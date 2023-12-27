@@ -122,7 +122,7 @@ class _DonasiWidgetState extends State<DonasiWidget> {
                     // trailing: new Text("right content"),
                     percent: progress1 = widget.donasiModel!.progress! / 100,
                     center: Text(
-                      widget.donasiModel!.progress.toString(),
+                      widget.donasiModel!.progress.toString() + '%',
                       style: TextStyle(fontSize: 10),
                     ),
                     linearStrokeCap: LinearStrokeCap.butt,

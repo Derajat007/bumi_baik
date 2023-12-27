@@ -21,6 +21,7 @@ class ProjectList extends StatefulWidget {
 }
 
 class _ProjectListState extends State<ProjectList> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +31,7 @@ class _ProjectListState extends State<ProjectList> {
         minItemsPerRow: 2,
         horizontalGridSpacing: 10,
         verticalGridSpacing: 10,
-        minItemWidth: MediaQuery.of(context).size.width * 0.3,
+        minItemWidth: MediaQuery.of(context).size.width * 0.5,
         horizontalGridMargin: 10,
         verticalGridMargin: 10,
         children: List.generate(
@@ -59,7 +60,7 @@ class _ProjectListState extends State<ProjectList> {
                           topRight: Radius.circular(10)),
                       child: FancyShimmerImage(
                         boxFit: BoxFit.cover,
-                        imageUrl: "",
+                        imageUrl: widget.projectList[index].photo.toString(),
                         errorWidget: Image.network(
                             'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
                       ),

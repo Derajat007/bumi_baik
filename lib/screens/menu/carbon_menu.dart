@@ -60,11 +60,12 @@ class _CarbonMenuState extends State<CarbonMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppbar(),
-      body: Column(
+      body:
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             child: Text(
               "Pohon Kamu",
               style: Theme.of(context).textTheme.titleLarge,
@@ -76,19 +77,20 @@ class _CarbonMenuState extends State<CarbonMenu> {
         ],
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: FloatingActionButton.extended(
-          backgroundColor: ColorManager.primary,
-          //onPressed: _goToTheLake,
-          onPressed: () {
-            launchUrl(
-              Uri.parse(detail.data!.corporateTreeDistributionDocument ?? ""),
-              mode: LaunchMode.externalApplication,
-            );
-          },
-          label: const Text('Daftar Pohon Kamu'),
-          icon: const Icon(
-            FontAwesomeIcons.mapPin,
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: FloatingActionButton.extended(
+            backgroundColor: ColorManager.primary,
+            onPressed: () {
+              launchUrl(
+                Uri.parse(detail.data!.corporateTreeDistributionDocument ?? ""),
+                mode: LaunchMode.externalApplication,
+              );
+            },
+            label: const Text('Daftar Pohon Kamu'),
+            icon: const Icon(
+              FontAwesomeIcons.mapPin),
           ),
         ),
       ),
@@ -98,7 +100,7 @@ class _CarbonMenuState extends State<CarbonMenu> {
   buildAppbar() {
     return AppBar(
       elevation: 1,
-      toolbarHeight: MediaQuery.of(context).size.height * 0.54,
+      toolbarHeight: MediaQuery.of(context).size.height * 0.30,
       backgroundColor: Colors.white,
       flexibleSpace: SafeArea(
         child: Padding(
@@ -123,8 +125,8 @@ class _CarbonMenuState extends State<CarbonMenu> {
               Text(
                 // ignore: prefer_interpolation_to_compose_strings
                 "Total Jejak karbon kamu dalam setahun terakhir adalah " +
-                    (carbon == null ? "-" : carbon!.emision!.toString()) +
-                    " Kg ",
+                    detail.data!.corporateCarbon.toString() + " Kg ",
+                    // (carbon == null ? "-" : carbon!.emision!.toString()) +
                 style: const TextStyle(color: Colors.black),
               ),
               // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -162,22 +164,22 @@ class _CarbonMenuState extends State<CarbonMenu> {
                   // ),
                   // ),
                   ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-              Text(
-                carbon == null
-                    ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
-                    : carbon!.offset == null
-                        ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
-                        : "Pelunasan karbon kamu telah mencapai ${carbon!.offset!}% dari total jejak karbon dalam setahun terakhir",
-                style: const TextStyle(color: Colors.black),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-              Text(
-                carbon == null
-                    ? ""
-                    : "Tanggal perhitungan jejak karbon terakhir ${DateFormat.yMMMEd('id_ID').format(carbon!.lastCalculate!)}",
-                style: const TextStyle(color: Colors.grey),
-              ),
+              // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+              // Text(
+              //   carbon == null
+              //       ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
+              //       : carbon!.offset == null
+              //           ? "Pelunasan karbon kamu masi 0% dalam setahun terakhir"
+              //           : "Pelunasan karbon kamu telah mencapai ${carbon!.offset!}% dari total jejak karbon dalam setahun terakhir",
+              //   style: const TextStyle(color: Colors.black),
+              // ),
+              // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+              // Text(
+              //   carbon == null
+              //       ? ""
+              //       : "Tanggal perhitungan jejak karbon terakhir ${DateFormat.yMMMEd('id_ID').format(carbon!.lastCalculate!)}",
+              //   style: const TextStyle(color: Colors.grey),
+              // ),
             ],
           ),
         ),
