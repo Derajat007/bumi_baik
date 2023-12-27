@@ -25,7 +25,8 @@ class CarbonMenu extends StatefulWidget {
 }
 
 class _CarbonMenuState extends State<CarbonMenu> {
-  DetailDistributeTreesRespone detail = DetailDistributeTreesRespone();
+  DetailDistributeTreesRespone? detail;
+  bool isloading = true;
   // Completer<GoogleMapController> _controller = Completer();
 
   // static final CameraPosition _kGooglePlex = CameraPosition(
@@ -47,35 +48,57 @@ class _CarbonMenuState extends State<CarbonMenu> {
   @override
   void initState() {
     super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   getData();
+    // });
     getData();
   }
 
   void getData() async {
+    isloading = true;
     detail = await DetailDistributeTreesService().getDetail();
-    // setState(() {});
-    print(detail.data!.corporateTreeDistributionImage ?? "gak ada");
+    isloading = false;
+    setState(() {});
+    // print(detail!.data!.corporateTreeDistributionImage ?? "gak ada");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppbar(),
-      body:
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Text(
-              "Pohon Kamu",
-              style: Theme.of(context).textTheme.titleLarge,
+      body: isloading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  child: Text(
+                    "Pohon Kamu",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                InteractiveViewer(
+                    child: Image.network(
+                  detail!.data!.corporateTreeDistributionImage!,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                )),
+              ],
             ),
-          ),
-          InteractiveViewer(
-              child: Image.network(
-                  detail.data!.corporateTreeDistributionImage ?? "")),
-        ],
-      ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40),
         child: FloatingActionButton.extended(
@@ -83,7 +106,7 @@ class _CarbonMenuState extends State<CarbonMenu> {
           //onPressed: _goToTheLake,
           onPressed: () {
             launchUrl(
-              Uri.parse(detail.data!.corporateTreeDistributionDocument ?? ""),
+              Uri.parse(detail!.data!.corporateTreeDistributionDocument ?? ""),
               mode: LaunchMode.externalApplication,
             );
           },
@@ -130,39 +153,39 @@ class _CarbonMenuState extends State<CarbonMenu> {
               ),
               // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               // const Center(
-                  // child: SizedBox(
-                  //   width: MediaQuery.of(context).size.width,
-                  //   height: MediaQuery.of(context).size.height * 0.15,
-                  // child: LiquidLinearProgressIndicator(
-                  //   value: carbon == null
-                  //       ? 0
-                  //       : carbon!.offset == null
-                  //           ? 0
-                  //           : carbon!.offset! / 100, // Defaults to 0.5.
-                  //   valueColor: AlwaysStoppedAnimation(ColorManager
-                  //       .primary), // Defaults to the current Theme's accentColor.
-                  //   backgroundColor: Colors.grey[
-                  //       700], // Defaults to the current Theme's backgroundColor.
-                  //   borderColor: Colors.grey[700]!,
-                  //   borderWidth: 5.0,
-                  //   borderRadius: 12.0,
-                  //   direction: Axis
-                  //       .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                  //   center: Text(
-                  //     carbon == null
-                  //         ? "0%"
-                  //         : carbon!.offset == null
-                  //             ? "0%"
-                  //             : "${carbon!.offset!.toStringAsFixed(0)}%",
-                  //     style: const TextStyle(
-                  //       color: Colors.white,
-                  //       fontWeight: FontWeight.bold,
-                  //       fontSize: 20,
-                  //     ),
-                  //   ),
-                  // ),
-                  // ),
-                  // ),
+              // child: SizedBox(
+              //   width: MediaQuery.of(context).size.width,
+              //   height: MediaQuery.of(context).size.height * 0.15,
+              // child: LiquidLinearProgressIndicator(
+              //   value: carbon == null
+              //       ? 0
+              //       : carbon!.offset == null
+              //           ? 0
+              //           : carbon!.offset! / 100, // Defaults to 0.5.
+              //   valueColor: AlwaysStoppedAnimation(ColorManager
+              //       .primary), // Defaults to the current Theme's accentColor.
+              //   backgroundColor: Colors.grey[
+              //       700], // Defaults to the current Theme's backgroundColor.
+              //   borderColor: Colors.grey[700]!,
+              //   borderWidth: 5.0,
+              //   borderRadius: 12.0,
+              //   direction: Axis
+              //       .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+              //   center: Text(
+              //     carbon == null
+              //         ? "0%"
+              //         : carbon!.offset == null
+              //             ? "0%"
+              //             : "${carbon!.offset!.toStringAsFixed(0)}%",
+              //     style: const TextStyle(
+              //       color: Colors.white,
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 20,
+              //     ),
+              //   ),
+              // ),
+              // ),
+              // ),
               // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               // Text(
               //   carbon == null
@@ -179,10 +202,10 @@ class _CarbonMenuState extends State<CarbonMenu> {
 //                 style: const TextStyle(color: Colors.grey),
 //               ),
 // >>>>>>> c5df120d50c32942ef4d86afd42cd52448936db4
-          ],
+            ],
           ),
         ),
-        ),
+      ),
     );
   }
 }
