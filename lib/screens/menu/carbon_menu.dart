@@ -77,20 +77,19 @@ class _CarbonMenuState extends State<CarbonMenu> {
         ],
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: FloatingActionButton.extended(
-            backgroundColor: ColorManager.primary,
-            onPressed: () {
-              launchUrl(
-                Uri.parse(detail.data!.corporateTreeDistributionDocument ?? ""),
-                mode: LaunchMode.externalApplication,
-              );
-            },
-            label: const Text('Daftar Pohon Kamu'),
-            icon: const Icon(
-              FontAwesomeIcons.mapPin),
+        padding: const EdgeInsets.symmetric(vertical: 40),
+        child: FloatingActionButton.extended(
+          backgroundColor: ColorManager.primary,
+          //onPressed: _goToTheLake,
+          onPressed: () {
+            launchUrl(
+              Uri.parse(detail.data!.corporateTreeDistributionDocument ?? ""),
+              mode: LaunchMode.externalApplication,
+            );
+          },
+          label: const Text('Data Detail Project '),
+          icon: const Icon(
+            FontAwesomeIcons.mapPin,
           ),
         ),
       ),
@@ -124,13 +123,13 @@ class _CarbonMenuState extends State<CarbonMenu> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Text(
                 // ignore: prefer_interpolation_to_compose_strings
-                "Total Jejak karbon kamu dalam setahun terakhir adalah " +
-                    detail.data!.corporateCarbon.toString() + " Kg ",
-                    // (carbon == null ? "-" : carbon!.emision!.toString()) +
+                "Total Jejak Karbon Dalam Project Penanaman adalah " +
+                    (carbon == null ? "-" : carbon!.emision!.toString()) +
+                    " Kg ",
                 style: const TextStyle(color: Colors.black),
               ),
               // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Center(
+              // const Center(
                   // child: SizedBox(
                   //   width: MediaQuery.of(context).size.width,
                   //   height: MediaQuery.of(context).size.height * 0.15,
@@ -163,7 +162,7 @@ class _CarbonMenuState extends State<CarbonMenu> {
                   //   ),
                   // ),
                   // ),
-                  ),
+                  // ),
               // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               // Text(
               //   carbon == null
@@ -176,14 +175,14 @@ class _CarbonMenuState extends State<CarbonMenu> {
               // SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               // Text(
               //   carbon == null
-              //       ? ""
-              //       : "Tanggal perhitungan jejak karbon terakhir ${DateFormat.yMMMEd('id_ID').format(carbon!.lastCalculate!)}",
-              //   style: const TextStyle(color: Colors.grey),
-              // ),
-            ],
+//                     : "Tanggal perhitungan jejak karbon terakhir ${DateFormat.yMMMEd('id_ID').format(carbon!.lastCalculate!)}",
+//                 style: const TextStyle(color: Colors.grey),
+//               ),
+// >>>>>>> c5df120d50c32942ef4d86afd42cd52448936db4
+          ],
           ),
         ),
-      ),
+        ),
     );
   }
 }
